@@ -24,6 +24,9 @@ allprojects {
     repositories {
         addTrainRepositories(project)
         mavenCentral()
+        maven("https://mirrors.tencent.com/nexus/repository/maven-tencent")
+        maven("https://mirrors.tencent.com/nexus/repository/maven-public")
+        mavenLocal()
     }
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         // outputs the compiler version to logs so we can check whether the train configuration applied

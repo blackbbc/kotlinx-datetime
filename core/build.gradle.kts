@@ -71,6 +71,9 @@ kotlin {
                         target("tvosSimulatorArm64")
                     }
                 }
+                common("ohos") {
+                    target("ohosArm64")
+                }
             }
             common("androidNative") {
                 target("androidNativeArm32")

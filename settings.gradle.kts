@@ -3,6 +3,9 @@ pluginManagement {
         maven(url = "https://maven.pkg.jetbrains.space/kotlin/p/kotlinx/maven")
         mavenCentral()
         gradlePluginPortal()
+        maven("https://mirrors.tencent.com/nexus/repository/maven-tencent")
+        maven("https://mirrors.tencent.com/nexus/repository/maven-public")
+        mavenLocal()
     }
     val dokkaVersion: String by settings
     val benchmarksVersion: String by settings
