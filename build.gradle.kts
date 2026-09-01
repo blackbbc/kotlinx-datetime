@@ -38,6 +38,28 @@ allprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile>().configureEach {
         compilerOptions { freeCompilerArgs.add("-Xpartial-linkage-loglevel=ERROR") }
     }
+
+    // Publish the KBA fork to XMind's AWS CodeArtifact, the way the coil fork does. The token comes
+    // from the `codeartifactToken` gradle property (managed by bagel's
+    // scripts/codeartifact-refresh.sh) or the CODEARTIFACT_AUTH_TOKEN env var. The default `pkg` AWS
+    // profile is read-only, so publishing needs a token minted from the `pkg-maven-writer` profile
+    // and passed as `-PcodeartifactToken=...`. Produces `publish*ToCodeArtifactRepository` tasks.
+    plugins.withId("maven-publish") {
+        extensions.configure<org.gradle.api.publish.PublishingExtension> {
+            repositories {
+                maven {
+                    name = "CodeArtifact"
+                    url = uri("https://supermind-688567292074.d.codeartifact.ap-northeast-1.amazonaws.com/maven/main/")
+                    credentials {
+                        username = "aws"
+                        password = providers.gradleProperty("codeartifactToken").orNull
+                            ?: System.getenv("CODEARTIFACT_AUTH_TOKEN")
+                            ?: ""
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Disable NPM to NodeJS nightly compatibility check.
